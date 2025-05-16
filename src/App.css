@@ -4,13 +4,45 @@
   padding: 2rem;
   text-align: center;
 }
-.square{
-  margin: 0.5rem;
+/* .square{
+  margin: 0.2rem;
+  width: 5rem;
+  height: 5rem;
+  padding: 0rem;
+  font-size: 2rem;
+} */
+
+.square {
+  margin: 0.2rem;
+  width: 5rem;
+  height: 5rem;
+  padding: 0rem;
+  font-size: 2rem;
+   line-height: 5rem;       
+  vertical-align: middle;
+  /* text-align: center;
+  display: inline-block;
+  overflow: hidden; */
+}
+
+
+
+/* .square {
+  margin: 0.2rem;
   width: 5rem;
   height: 5rem;
   font-size: 2rem;
-}
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+} */
 
+/* .board-row{
+    margin: 0rem;
+    padding: 0rem;
+} */
 .board{
   display: flex;
   flex-direction: column;
