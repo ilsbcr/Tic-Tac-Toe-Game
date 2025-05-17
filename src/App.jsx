@@ -1,4 +1,4 @@
-import { use, useState } from 'react'
+import { useState } from 'react'
 import './App.css'
 
 export default function App() {
@@ -66,13 +66,12 @@ function Game() {
 function Board({ xIsNext, squares, onPlay }) {
 
 
-  //const winner = calculateWinner(squares);
   function handleSquareClick(i) {
 
     if (squares[i] || calculateWinner(squares)) {
       return;
     }
-    //TODO:no winner case 
+  
     const nextSquares = squares.slice();
     nextSquares[i] = xIsNext ? "X" : "O";
     onPlay(nextSquares);
