@@ -4,9 +4,9 @@ import './App.css'
 export default function App() {
 
   return (
-    
-      <Board />
-   
+
+    <Game />
+
   )
 }
 
@@ -15,18 +15,53 @@ function Square({ value, onSquareClick }) {
   return <button className="square" onClick={onSquareClick}>{value}</button>;
 }
 
-function Board() {
 
-  const [squares, setSquares] = useState(Array(9).fill(null));
+function Game() {
   const [xIsNext, setXIsNext] = useState(true);
+  const [history, setHistory] = useState([Array(9).fill(null)]);
+  const currentSquares = history[history.length - 1];
 
-    function handleRestart() {
-        setSquares (Array(9).fill(null));
-    // Reset the game state here
-    // For example, reset the score, level, etc.
-    // You can also reset any other game-related variables
-    // to their initial values.
-    // This function will be called when the restart button is clicked
+
+  function handlePlay(nextSquares) {
+    setHistory([...history, nextSquares]);
+    setXIsNext(!xIsNext);
+
+  }
+
+      function jumpTo(nextMove) {
+      // TODO:
+    }
+    const moves = history.map((squares, move) => {
+      let description;
+      if (move > 0) {
+        description = 'Go to move #' + move;
+      } else {
+        description = 'Go to game start';
+      }
+      return (
+        <li >
+          <button onClick={() => jumpTo(move)}>{description}</button>
+        </li>
+      );
+    })
+
+  return (
+    <div className="game">
+      <div className="game-board">
+        <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
+      </div>
+      <div className="game-info">
+        <ol>{moves}</ol>
+       
+      </div>
+    </div>
+  );
+}
+
+function Board({ xIsNext, squares, onPlay }) {
+
+  function handleRestart() {
+    onPlay(Array(9).fill(null));
   }
   //const winner = calculateWinner(squares);
   function handleSquareClick(i) {
@@ -34,11 +69,10 @@ function Board() {
     if (squares[i] || calculateWinner(squares)) {
       return;
     }
-//no winner case 
+    //TODO:no winner case 
     const nextSquares = squares.slice();
     nextSquares[i] = xIsNext ? "X" : "O";
-    setSquares(nextSquares);
-    setXIsNext(!xIsNext);
+    onPlay(nextSquares);
 
   }
 
@@ -53,11 +87,11 @@ function Board() {
 
   return (
     <>
-         <button className='btn' onClick={() => handleRestart()}>
+      <button className='btn' onClick={() => handleRestart()}>
         Restart the game
       </button>
       <div>{status}</div>
-      <div className="board">   
+      <div className="board">
         <div   >
           <Square value={squares[0]} onSquareClick={() => handleSquareClick(0)} />
           <Square value={squares[1]} onSquareClick={() => handleSquareClick(1)} />
@@ -79,7 +113,7 @@ function Board() {
 
 
 function calculateWinner(squares) {
-    const winnerLines = [
+  const winnerLines = [
     [0, 1, 2],
     [3, 4, 5],
     [6, 7, 8],
@@ -90,14 +124,14 @@ function calculateWinner(squares) {
     [2, 4, 6]
   ];
 
-  for(let i=0 ; i<winnerLines.length; i++){
-    const [a,b,c] = winnerLines[i];
-    if(squares[a] && squares[a]===squares[b] && squares[a]===squares[c]){
-    return squares[a];
+  for (let i = 0; i < winnerLines.length; i++) {
+    const [a, b, c] = winnerLines[i];
+    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+      return squares[a];
     }
   }
 
 
   return null;
 
-  }
+}
