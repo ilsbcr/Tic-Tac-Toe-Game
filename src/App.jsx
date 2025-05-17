@@ -30,35 +30,74 @@ function Board() {
   }
   //const winner = calculateWinner(squares);
   function handleSquareClick(i) {
+
+    if (squares[i] || calculateWinner(squares)) {
+      return;
+    }
+//no winner case 
     const nextSquares = squares.slice();
     nextSquares[i] = xIsNext ? "X" : "O";
     setSquares(nextSquares);
     setXIsNext(!xIsNext);
 
   }
+
+  const winner = calculateWinner(squares);
+  let status;
+  if (winner) {
+    status = "Winner: " + winner;
+  } else {
+    status = "Next player: " + (xIsNext ? "X" : "O");
+  }
+
+
   return (
     <>
          <button className='btn' onClick={() => handleRestart()}>
         Restart the game
       </button>
-
-      <div className="board">
+      <div>{status}</div>
+      <div className="board">   
         <div   >
+          <Square value={squares[0]} onSquareClick={() => handleSquareClick(0)} />
           <Square value={squares[1]} onSquareClick={() => handleSquareClick(1)} />
           <Square value={squares[2]} onSquareClick={() => handleSquareClick(2)} />
-          <Square value={squares[3]} onSquareClick={() => handleSquareClick(3)} />
         </div>
         <div   >
+          <Square value={squares[3]} onSquareClick={() => handleSquareClick(3)} />
           <Square value={squares[4]} onSquareClick={() => handleSquareClick(4)} />
           <Square value={squares[5]} onSquareClick={() => handleSquareClick(5)} />
-          <Square value={squares[6]} onSquareClick={() => handleSquareClick(6)} />
         </div>
         <div >
+          <Square value={squares[6]} onSquareClick={() => handleSquareClick(6)} />
           <Square value={squares[7]} onSquareClick={() => handleSquareClick(7)} />
           <Square value={squares[8]} onSquareClick={() => handleSquareClick(8)} />
-          <Square value={squares[9]} onSquareClick={() => handleSquareClick(9)} />
         </div>
       </div>
     </>)
 }
 
+
+function calculateWinner(squares) {
+    const winnerLines = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6]
+  ];
+
+  for(let i=0 ; i<winnerLines.length; i++){
+    const [a,b,c] = winnerLines[i];
+    if(squares[a] && squares[a]===squares[b] && squares[a]===squares[c]){
+    return squares[a];
+    }
+  }
+
+
+  return null;
+
+  }
